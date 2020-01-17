@@ -22,13 +22,18 @@ func showGameField(field [9]string) {
 }
 
 func gameOver(field [9]string, pl1 Player, pl2 Player) bool {
-	result := gameLogic(field)
+	result := checkWin(field)
 	if result == "x" {
 		fmt.Println("Player ", pl1.playerName, " won")
 		return true
 	}
 	if result == "o" {
 		fmt.Println("Player ", pl2.playerName, " won")
+		return true
+	}
+
+	if checkDrawGame(field) == true {
+		fmt.Println("It is draw game")
 		return true
 	}
 	return false
@@ -42,7 +47,7 @@ func checkMap(moveCombination map[string]int) (bool, string) {
 	}
 	return false, ""
 }
-func gameLogic(field [9]string) string {
+func checkWin(field [9]string) string {
 	m := make(map[string]int)
 	//Horizontal check
 	for i := 0; i < len(field); i += 3 {
@@ -86,6 +91,17 @@ func gameLogic(field [9]string) string {
 	}
 
 	return ""
+}
+
+func checkDrawGame(field [9]string) bool {
+	m := make(map[string]int)
+	for _, elem := range field {
+		m[elem]++
+	}
+	if len(m) == 2 {
+		return true
+	}
+	return false
 }
 
 func playersMove(field *[9]string, pl Player) {
